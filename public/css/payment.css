@@ -1,0 +1,446 @@
+/* ==============================
+   MLEB - Pembayaran (QRIS/VA) & DataTable
+   Halaman ini menggunakan variabel warna dari style.css (:root)
+   ============================== */
+
+/* =================== PAYMENT SUMMARY =================== */
+.pay-page { max-width: 720px; margin: 0 auto; }
+
+.pay-summary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.pay-summary .pay-code {
+    font-size: .82rem;
+    letter-spacing: .04em;
+    opacity: .8;
+    text-transform: uppercase;
+}
+
+.pay-summary .pay-amount {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin: .3rem 0 0;
+}
+
+.pay-summary .pay-amount small {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: .85;
+    margin-right: .25rem;
+}
+
+/* =================== SPECIAL REQUEST OPTIONS (Reservasi) =================== */
+.special-request-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .85rem;
+}
+
+.special-request-option {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    border: 1.5px solid var(--gray-light);
+    border-radius: var(--radius);
+    padding: .9rem 1rem;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    background: var(--white);
+    margin: 0;
+}
+
+.special-request-option:hover { border-color: var(--primary-light); }
+
+.special-request-option input[type="checkbox"] {
+    margin-top: .2rem;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    flex-shrink: 0;
+}
+
+.special-request-option:has(input:checked) {
+    border-color: var(--primary);
+    background: #eff6ff;
+}
+
+.special-request-option .sr-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--gray-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .85rem;
+    flex-shrink: 0;
+}
+
+.special-request-option:has(input:checked) .sr-icon {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.special-request-option .sr-text strong {
+    display: block;
+    font-size: .85rem;
+    color: var(--dark);
+}
+
+.special-request-option .sr-text small {
+    font-size: .76rem;
+    color: var(--gray);
+    line-height: 1.3;
+}
+
+@media (max-width: 768px) {
+    .special-request-options { grid-template-columns: 1fr; }
+}
+
+/* =================== METHOD SELECTOR (cards) =================== */
+.pay-methods {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pay-method-option { position: relative; }
+
+.pay-method-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.pay-method-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1rem;
+    cursor: pointer;
+    transition: border-color .2s, background .2s, transform .15s;
+    background: var(--white);
+    text-align: center;
+}
+
+.pay-method-option label:hover { transform: translateY(-2px); }
+
+.pay-method-option input[type="radio"]:checked + label {
+    border-color: var(--primary);
+    background: #eff6ff;
+    box-shadow: 0 0 0 3px rgba(37,99,168,.12);
+}
+
+.pay-method-option .pm-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    background: var(--gray-light);
+    color: var(--primary);
+}
+
+.pay-method-option input[type="radio"]:checked + label .pm-icon {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.pay-method-option .pm-name { font-weight: 600; font-size: .92rem; }
+.pay-method-option .pm-desc { font-size: .76rem; color: var(--gray); }
+
+/* =================== PAYMENT DETAIL PANELS =================== */
+.pay-detail-panel {
+    display: none;
+    border: 1.5px solid var(--gray-light);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.pay-detail-panel.active { display: block; }
+
+/* ---- QRIS ---- */
+.qr-box {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 1rem;
+    background: var(--white);
+    border: 1.5px dashed var(--gray-light);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.qr-box svg { width: 100%; height: 100%; }
+
+.qr-caption {
+    font-size: .82rem;
+    color: var(--gray);
+    margin-bottom: .25rem;
+}
+
+.qr-caption strong { color: var(--dark); }
+
+.qr-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: .76rem;
+    font-weight: 600;
+    padding: .3rem .7rem;
+    border-radius: 20px;
+    margin-top: .5rem;
+}
+
+/* ---- Virtual Account ---- */
+.va-bank-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    margin-bottom: 1.25rem;
+}
+
+.va-bank-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius);
+    background: var(--primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .85rem;
+}
+
+.va-number-box {
+    background: var(--light);
+    border: 1.5px solid var(--gray-light);
+    border-radius: var(--radius);
+    padding: .9rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 360px;
+    margin: 0 auto 1rem;
+}
+
+.va-number-box .va-num {
+    font-family: 'Courier New', monospace;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: .03em;
+}
+
+.va-copy-btn {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: .35rem .65rem;
+    font-size: .78rem;
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+}
+
+.va-copy-btn:hover { background: var(--primary-light); }
+.va-copy-btn.copied { background: var(--success); }
+
+.pay-steps {
+    text-align: left;
+    max-width: 380px;
+    margin: 0 auto;
+    font-size: .85rem;
+    color: var(--gray);
+    padding-left: 1.2rem;
+}
+
+.pay-steps li { margin-bottom: .4rem; }
+
+/* =================== CONFIRM BUTTON =================== */
+.pay-confirm-btn {
+    width: 100%;
+    padding: .85rem;
+    font-size: 1rem;
+}
+
+.pay-note {
+    display: flex;
+    gap: .6rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+    border-radius: var(--radius);
+    padding: .8rem 1rem;
+    font-size: .82rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 480px) {
+    .pay-methods { grid-template-columns: 1fr; }
+    .va-number-box { flex-direction: column; gap: .6rem; }
+}
+
+/* =========================================
+   DATATABLE (jQuery DataTables) — restyle
+========================================= */
+.card.border-0.shadow-sm,
+.card.border-0.shadow {
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow) !important;
+    border: none !important;
+}
+
+.card.border-0.shadow-sm > .card-header,
+.card.border-0.shadow > .card-header {
+    background: var(--white) !important;
+    border-bottom: 1px solid var(--gray-light) !important;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 1rem 1.5rem;
+}
+
+.card.border-0.shadow-sm > .card-body,
+.card.border-0.shadow > .card-body {
+    padding: 1.5rem;
+}
+
+
+.dataTables_wrapper {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    font-size: .85rem;
+    color: var(--gray);
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border: 1.5px solid var(--gray-light);
+    border-radius: var(--radius);
+    padding: .35rem .7rem;
+    font-size: .85rem;
+    margin-left: .4rem;
+    background: var(--white);
+}
+
+.dataTables_wrapper .dataTables_filter input:focus,
+.dataTables_wrapper .dataTables_length select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(37,99,168,.12);
+}
+
+table.dataTable {
+    border-collapse: separate !important;
+    border-spacing: 0;
+    width: 100% !important;
+    margin-top: 1rem !important;
+}
+
+table.dataTable thead th {
+    background: var(--primary);
+    color: var(--white) !important;
+    font-size: .82rem;
+    font-weight: 600;
+    padding: .8rem 1rem !important;
+    border-bottom: none !important;
+    white-space: nowrap;
+}
+
+table.dataTable thead th:first-child { border-radius: var(--radius) 0 0 0; }
+table.dataTable thead th:last-child { border-radius: 0 var(--radius) 0 0; }
+
+table.dataTable tbody td {
+    padding: .7rem 1rem !important;
+    font-size: .87rem;
+    border-bottom: 1px solid var(--gray-light) !important;
+    vertical-align: middle;
+}
+
+table.dataTable tbody tr {
+    transition: background .15s;
+}
+
+table.dataTable tbody tr:hover {
+    background: #f8fafc;
+}
+
+table.dataTable tbody tr.odd { background: var(--white); }
+table.dataTable tbody tr.even { background: var(--white); }
+
+/* Sort icons */
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after {
+    color: rgba(255,255,255,.55) !important;
+}
+
+/* Pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: var(--radius) !important;
+    padding: .35rem .75rem !important;
+    margin-left: .25rem !important;
+    border: 1.5px solid var(--gray-light) !important;
+    background: var(--white) !important;
+    color: var(--gray) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #eff6ff !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: var(--white) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    opacity: .45;
+}
+
+@media (max-width: 768px) {
+    .dataTables_wrapper { padding: 1rem; overflow-x: auto; }
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        text-align: left !important;
+        margin-bottom: .5rem;
+    }
+}
